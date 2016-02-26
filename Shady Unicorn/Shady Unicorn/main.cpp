@@ -1,9 +1,16 @@
-#include <iostream>
-#include <SFML/Window.hpp>
+#include <string>
+#include "game_state.h"
+#include "main_game.h"
+#include "main_menu.h"
+
+GameState coreState;
 
 int main()
 {
-	sf::Window window(sf::VideoMode(1280, 720), "My window");
+	sf::RenderWindow window(sf::VideoMode(1280, 720), "My window");
+
+	coreState.SetWindow(&window);
+	coreState.setState(new MainMenu());
 
 	// run the program as long as the window is open
 	while (window.isOpen())
@@ -16,6 +23,12 @@ int main()
 			if (event.type == sf::Event::Closed)
 				window.close();
 		}
+		window.clear(sf::Color::Black);
+
+		coreState.Update();
+		coreState.Render();
+
+		window.display();
 	}
 
 	return 0;
