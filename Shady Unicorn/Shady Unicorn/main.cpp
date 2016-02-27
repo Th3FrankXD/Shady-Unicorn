@@ -1,17 +1,16 @@
-#include <string>
-#include "game_state.h"
-#include "main_game.h"
-#include "main_menu.h"
-
-GameState coreState;
+#include <SFML/Graphics.hpp>
+#include "StateManager.h"
+#include "MainMenu.h"
 
 int main()
 {
 	sf::RenderWindow window(sf::VideoMode(1280, 720), "My window");
 
-	coreState.SetWindow(&window);
-	coreState.setState(new MainMenu());
+	StateManager stateManager = StateManager();
 
+	stateManager.SetState(new MainMenu());
+	stateManager.SetState(new MainMenu());
+	
 	// run the program as long as the window is open
 	while (window.isOpen())
 	{
@@ -25,8 +24,7 @@ int main()
 		}
 		window.clear(sf::Color::Black);
 
-		coreState.Update();
-		coreState.Render();
+		stateManager.Update();
 
 		window.display();
 	}

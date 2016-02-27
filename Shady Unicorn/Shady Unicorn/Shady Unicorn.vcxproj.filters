@@ -19,26 +19,47 @@
     <Filter Include="Source Files\States">
       <UniqueIdentifier>{8bc3e5ce-ab48-441e-9cf8-c66686ba801e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Entities">
+      <UniqueIdentifier>{a64a4fb3-5644-42d1-84a3-2f5eb38d10a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Core">
+      <UniqueIdentifier>{a2303d89-8825-491c-a2b1-3dcf5c11f57c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Core">
+      <UniqueIdentifier>{5801e61a-865c-4a73-8a0e-bce1d8ea91b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Entities">
+      <UniqueIdentifier>{71e3917e-468d-4983-a793-757ebb8ed9ab}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="main_menu.cpp">
+    <ClCompile Include="StateManager.cpp">
+      <Filter>Source Files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenu.cpp">
       <Filter>Source Files\States</Filter>
     </ClCompile>
-    <ClCompile Include="main_game.cpp">
+    <ClCompile Include="State.cpp">
+      <Filter>Source Files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="MainGame.cpp">
       <Filter>Source Files\States</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="game_state.h">
+    <ClInclude Include="StateManager.h">
+      <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="State.h">
+      <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenu.h">
       <Filter>Header Files\States</Filter>
     </ClInclude>
-    <ClInclude Include="main_menu.h">
-      <Filter>Header Files\States</Filter>
-    </ClInclude>
-    <ClInclude Include="main_game.h">
+    <ClInclude Include="MainGame.h">
       <Filter>Header Files\States</Filter>
     </ClInclude>
   </ItemGroup>
