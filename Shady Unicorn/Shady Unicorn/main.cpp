@@ -6,10 +6,9 @@ int main()
 {
 	sf::RenderWindow window(sf::VideoMode(1280, 720), "My window");
 
-	StateManager stateManager = StateManager();
+	extern StateManager stateManager;
 
-	stateManager.SetState(new MainMenu());
-	stateManager.SetState(new MainMenu());
+	stateManager.SetState(new MainMenu);
 	
 	// run the program as long as the window is open
 	while (window.isOpen())

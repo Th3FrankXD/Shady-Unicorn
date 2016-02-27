@@ -3,8 +3,7 @@
 class State
 {
 public:
-	State();
+	virtual void Init();
 	virtual ~State();
 	virtual void Update();
-	virtual void Render();
 };

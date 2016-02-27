@@ -5,8 +5,7 @@
 class MainMenu : public State
 {
 public:
-	MainMenu();
+	virtual void Init();
 	virtual ~MainMenu();
 	virtual void Update();
-	virtual void Render();
 };

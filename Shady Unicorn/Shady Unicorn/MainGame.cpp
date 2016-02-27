@@ -1,19 +1,19 @@
 #include "MainGame.h"
-#include <iostream>
 
-MainGame::MainGame()
+void MainGame::Init()
 {
-	std::cout << "enter game\n";
+	this->paused = false;
 }
 MainGame::~MainGame()
 {
-	std::cout << "exit game\n";
 }
 
 void MainGame::Update()
 {
-}
-
-void MainGame::Render()
-{
+	if (!this->paused)
+	{
+	}
+	else
+	{
+	}
 }

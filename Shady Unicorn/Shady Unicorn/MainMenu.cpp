@@ -1,19 +1,17 @@
 #include "MainMenu.h"
-#include <iostream>
+#include "StateManager.h"
+#include "MainGame.h"
 
-MainMenu::MainMenu()
+extern StateManager stateManager;
+
+void MainMenu::Init()
 {
-	std::cout << "enter menu\n";
 }
 MainMenu::~MainMenu()
 {
-	std::cout << "exit menu\n";
 }
 
 void MainMenu::Update()
 {
-}
-
-void MainMenu::Render()
-{
+	stateManager.SetState(new MainGame);
 }

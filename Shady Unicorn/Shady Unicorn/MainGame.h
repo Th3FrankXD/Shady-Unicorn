@@ -5,8 +5,9 @@
 class MainGame : public State
 {
 public:
-	MainGame();
+	virtual void Init();
 	virtual ~MainGame();
 	virtual void Update();
-	virtual void Render();
+private:
+	bool paused;
 };

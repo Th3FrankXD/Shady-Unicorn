@@ -1,5 +1,6 @@
 #include "StateManager.h"
-#include <iostream>
+
+StateManager stateManager = StateManager();
 
 StateManager::StateManager() 
 {
@@ -11,11 +12,12 @@ StateManager::~StateManager()
 
 void StateManager::SetState(State* state)
 {
-	if (this->state == nullptr)
+	if (this->state != nullptr)
 	{
 		delete this->state;
 	}
 	this->state = state;
+	this->state->Init();
 }
 
 State* StateManager::GetState()

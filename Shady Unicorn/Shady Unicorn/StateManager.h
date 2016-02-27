@@ -1,14 +1,13 @@
 #pragma once
 
 #include "State.h"
-#include <iostream>
 
 class StateManager
 {
 public:
 	StateManager();
 	~StateManager();
-	void SetState(State* state);
+	void SetState(State* type);
 	State* GetState();
 	void Update();
 private:
