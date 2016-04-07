@@ -8,4 +8,5 @@ public:
 	virtual void Init();
 	virtual ~MainMenu();
 	virtual void Update();
+	virtual void Render();
 };

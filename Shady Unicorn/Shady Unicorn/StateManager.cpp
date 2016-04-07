@@ -4,7 +4,6 @@ StateManager stateManager = StateManager();
 
 StateManager::StateManager() 
 {
-	this->state = nullptr;
 }
 StateManager::~StateManager() 
 {
@@ -28,4 +27,9 @@ State* StateManager::GetState()
 void StateManager::Update()
 {
 	this->state->Update();
+}
+
+void StateManager::Render()
+{
+	this->state->Render();
 }

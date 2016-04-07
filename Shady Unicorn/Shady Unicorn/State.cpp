@@ -11,3 +11,7 @@ State::~State()
 void State::Update()
 {
 }
+
+void State::Render()
+{
+}

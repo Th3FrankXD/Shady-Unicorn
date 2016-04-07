@@ -10,6 +10,7 @@ public:
 	void SetState(State* type);
 	State* GetState();
 	void Update();
+	void Render();
 private:
 	State* state;
 };
