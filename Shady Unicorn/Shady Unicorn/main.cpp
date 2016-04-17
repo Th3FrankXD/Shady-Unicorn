@@ -1,5 +1,6 @@
 #include <GLAD/glad.h>
 #include <GLFW/glfw3.h>
+#include <glm/vec2.hpp>
 #include <vector>
 #include "ShaderManager.h"
 #include "StateManager.h"
@@ -8,19 +9,71 @@
 void loadShaders()
 {
 	extern ShaderManager shaderManager;
-	shaderManager.LoadShader("shaders/vertexShader.vs", "vs", "vertex");
-	shaderManager.LoadShader("shaders/fragmentShader.fs", "fs", "fragment");
+	shaderManager.LoadShader("shaders/vertexShader.vs", "vs", "mapvs");
+	shaderManager.LoadShader("shaders/fragmentShader.fs", "fs", "mapfs");
+}
+
+glm::vec2 getScreenSize()
+{
+	const GLFWvidmode * mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+	return glm::vec2(mode->width, mode->height);
+}
+
+glm::vec2 pixToCoord(float x, float y)
+{
+	int screenWidth = getScreenSize().x;
+	int screenHeight = getScreenSize().y;
+
+	float newX = 2.0 / screenWidth * x - 1;
+	float newY = 2.0 / screenHeight * y - 1;
+
+	return glm::vec2(newX, newY);
+}
+
+void RenderWorld(ShaderManager shaderManager, GLuint vao, GLuint vbo)
+{
+	std::vector<GLuint> shaders;
+	shaders.push_back(shaderManager.GetShader("mapvs"));
+	shaders.push_back(shaderManager.GetShader("mapfs"));
+
+	glUseProgram(shaderManager.CreateProgram(shaders));
+
+	int screenWidth = getScreenSize().x;
+	int screenHeight = getScreenSize().y;
+	int tileSize = 16;
+
+	std::vector<glm::vec2> vertices;
+	for (float y = 0; y < screenHeight / tileSize + 1; y++)
+	{
+		for (float x = 0; x < screenWidth / tileSize + 1; x++)
+		{
+			vertices.push_back(pixToCoord(x * tileSize, y * tileSize));
+		}
+	}
+
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec2) * vertices.size(), &vertices[0], GL_DYNAMIC_DRAW);
+
+	glBindVertexArray(vao);
+	glEnableVertexAttribArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, NULL);
+
+	glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
+
+	glDrawArrays(GL_POINTS, 0, vertices.size());
+	glDisableVertexAttribArray(0);
+
+	glDeleteProgram(shaderManager.programID);
 }
 
 int main(void)
 {
 	GLFWwindow* window;
 
-	/* Initialize the library */
 	if (!glfwInit())
 		return -1;
 
-	/* Create a windowed mode window and its OpenGL context */
 	window = glfwCreateWindow(1280, 720, "Shady Unicorn", NULL, NULL);
 	if (!window)
 	{
@@ -28,7 +81,6 @@ int main(void)
 		return -1;
 	}
 
-	/* Make the window's context current */
 	glfwMakeContextCurrent(window);
 
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
@@ -41,50 +93,25 @@ int main(void)
 	extern StateManager stateManager;
 	stateManager.SetState(new MainMenu);
 
-	/* Loop until the user closes the window */
+	GLuint vbo = 0;
+	glGenBuffers(1, &vbo);
+
+	GLuint vao = 0;
+	glGenVertexArrays(1, &vao);
+
 	while (!glfwWindowShouldClose(window))
 	{
-		/* Render here */
 		stateManager.Update();
 		stateManager.Render();
 
 		extern ShaderManager shaderManager;
-		std::vector<GLuint> shaders;
-		shaders.push_back(shaderManager.GetShader("vertex"));
-		shaders.push_back(shaderManager.GetShader("fragment"));
-		glUseProgram(shaderManager.CreateProgram(shaders));
-		glDeleteProgram(shaderManager.programID);
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		float points[] = {
-			0.0f,  0.5f,  0.0f,
-			0.5f, -0.5f,  0.0f,
-			-0.5f, -0.5f,  0.0f
-		};
+		RenderWorld(shaderManager, vao, vbo);
 
-		//////////////////////////////////
-		GLuint vbo = 0;
-		glGenBuffers(1, &vbo);
-		glBindBuffer(GL_ARRAY_BUFFER, vbo);
-		glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(float), points, GL_STATIC_DRAW);
-
-		GLuint vao = 0;
-		glGenVertexArrays(1, &vao);
-		glBindVertexArray(vao);
-		glEnableVertexAttribArray(0);
-		glBindBuffer(GL_ARRAY_BUFFER, vbo);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
-		
-		/* Starting from vertex 0; 3 vertices total -> 1 triangle */
-		glDrawArrays(GL_TRIANGLES, 0, 3);
-		glDisableVertexAttribArray(0);
-		/////////////////////////////////////
-
-		/* Swap front and back buffers */
 		glfwSwapBuffers(window);
 
-		/* Poll for and process events */
 		glfwPollEvents();
 	}
 

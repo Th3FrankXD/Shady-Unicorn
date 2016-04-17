@@ -99,16 +99,19 @@ GLuint ShaderManager::CreateProgram(std::vector<GLuint> shaders)
 	for (int i = 0; i < shaders.size(); i++)
 	{
 		glAttachShader(programID, shaders[i]);
-		glLinkProgram(programID);
+	}
 
-		glGetProgramiv(programID, GL_LINK_STATUS, &result);
-		glGetProgramiv(programID, GL_INFO_LOG_LENGTH, &infoLogLength);
-		if (infoLogLength > 0) {
-			std::vector<char> programErrorMessage(infoLogLength + 1);
-			glGetProgramInfoLog(programID, infoLogLength, NULL, &programErrorMessage[0]);
-			std::cout << "\n" << &programErrorMessage[0];
-		}
+	glLinkProgram(programID);
+	glGetProgramiv(programID, GL_LINK_STATUS, &result);
+	glGetProgramiv(programID, GL_INFO_LOG_LENGTH, &infoLogLength);
+	if (infoLogLength > 0) {
+		std::vector<char> programErrorMessage(infoLogLength + 1);
+		glGetProgramInfoLog(programID, infoLogLength, NULL, &programErrorMessage[0]);
+		std::cout << "\n" << &programErrorMessage[0];
+	}
 
+	for (int i = 0; i < shaders.size(); i++)
+	{
 		glDetachShader(programID, shaders[i]);
 	}
 

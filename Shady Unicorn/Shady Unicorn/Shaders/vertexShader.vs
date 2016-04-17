@@ -1,9 +1,9 @@
-#version 330 core
-
-layout(location = 0) in vec3 vertexPosition_modelspace;
+#version 430 core
+varying vec4 pos;
 
 void main()
 {
-  gl_Position.xyz = vertexPosition_modelspace;
-  gl_Position.w = 1.0;
+  gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;
+  pos = abs(gl_Position);
+  gl_PointSize = 16.0;
 }
