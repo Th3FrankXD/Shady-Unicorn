@@ -1,6 +1,7 @@
 #version 430 core
-varying vec4 pos;
+in vec4 pos;
+out vec4 color;
 
 void main(){
-  gl_FragColor = pos;
+  color = pos;
 }
